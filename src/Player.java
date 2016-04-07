@@ -1,4 +1,3 @@
-import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -39,14 +38,18 @@ public final class Player {
     }
 
     public Player withNewState(@NotNull PlayerState state) {
-        return new Player(this.number, this.name, this.sex, this.role, state, this.fault);
+        return new Player(number, name, sex, role, state, fault);
     }
 
     public Player addFault() {
-        return new Player(this.number, this.name, this.sex, this.role, this.state, this.fault+1);
+        return new Player(number, name, sex, role, state, fault+1);
     }
 
     public int faults() {
-        return this.fault;
+        return fault;
+    }
+
+    public PlayerState state() {
+        return state;
     }
 }
