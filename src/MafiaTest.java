@@ -30,7 +30,11 @@ public class MafiaTest {
         Thread.sleep(3000);
         System.out.println(mafiaCore.getPhase());
         System.out.println(mafiaCore.getNominations(mafiaCore.getDay(), 0));
-        Thread.sleep(2000);
+        Thread.sleep(5000);
+//        while (mafiaCore.getPhase() == GamePhase.SPEECH);
+        System.out.println(mafiaCore.getPhase());
+        mafiaCore.nextTurn(10);
+        Thread.sleep(3000);
         System.out.println(mafiaCore.getPhase());
     }
 }
