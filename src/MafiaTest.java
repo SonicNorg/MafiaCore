@@ -16,14 +16,14 @@ public class MafiaTest {
             else if (i<3) role = Role.MAFIA;
             else if (i==3) role = Role.SHERIFF;
             else role = Role.CITIZEN;
-            mafiaCore.initPlayer(i, true, "", role);
-            System.out.print(role);
+            mafiaCore.initPlayer(i, true, role);
+            System.out.println(role);
         }
         System.out.println("Доброе утро, город!..");
 
         mafiaCore.startDay();
 
-        mafiaCore.nextTurn(60);
+        mafiaCore.nextTurn(10); //10 sec speech
         System.out.println(mafiaCore.getPhase());
         Thread.sleep(3000);
         mafiaCore.nominate(6);

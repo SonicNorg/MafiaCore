@@ -1,7 +1,7 @@
 import org.jetbrains.annotations.NotNull;
 
 /**
- * Class for Mafia player
+ * Class represents Mafia player
  * Created by Norg on 07.04.2016.
  */
 public final class Player {
@@ -17,7 +17,7 @@ public final class Player {
     }
 
     public void speech(int seconds) {
-        System.out.println("Слово получает игрок №" + (number) + " - " + name);
+        System.out.println("Слово получает игрок №" + (number) + " - " + toString());
     }
 
     public Player (int nmbr, String nm, boolean sx, Role rl, PlayerState stt, int flt) {
@@ -51,5 +51,10 @@ public final class Player {
 
     public PlayerState state() {
         return state;
+    }
+
+    @Override
+    public String toString() {
+        return (sex ? "г-н " : "г-жа ") + name;
     }
 }

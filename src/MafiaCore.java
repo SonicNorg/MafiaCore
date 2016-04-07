@@ -1,6 +1,7 @@
 import java.util.*;
 
 /**
+ * Class for main engine of Mafia board game
  * Created by Norg on 13.02.2016.
  */
 public class MafiaCore {
@@ -10,9 +11,6 @@ public class MafiaCore {
     Timer mTimer;
     private Player[] players = new Player[10];
     private int curNight, curDay;
-//    public static int DON = 20, SHERIFF = 21, MAFIA = 22, CITIZEN = 23;
-//    public static int ZERO_NIGHT = 10, DAY = 11, SHOOT = 12, DON_CHECKING = 13, SHERIFF_CHECKING = 14, SPEECH = 15, VOTE = 16, FIGHT = 17;
-//    public static int IN_GAME = 30, KILLED = 31, VOTED_OUT = 32, MUTED = 33, LEFT = 34, DISQUALIFIED = 35;
     //TODO backup(); restoreLastState(); restoreState();
     //TODO game log
 
@@ -85,7 +83,7 @@ public class MafiaCore {
     }
 
     public int addFault(int player) {
-        return ++(players[player].fault);
+        return (players[player] = players[player].addFault()).faults();
     }
 
     public int getDay() {
@@ -103,7 +101,7 @@ public class MafiaCore {
     }
 
     public void shot(int player) {
-        players[player].state = PlayerState.KILLED;
+        players[player] = players[player].withNewState(PlayerState.KILLED);
     }
 
     class TurnTimerTask extends TimerTask {
