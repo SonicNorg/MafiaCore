@@ -4,38 +4,35 @@ import java.util.*;
  * Created by Norg on 13.02.2016.
  */
 public class MafiaCore {
-    private int phase, curPlayer=-1, nextPlayer=0;
+    private int curPlayer=-1, nextPlayer=0;
+    GamePhase phase;
     private GameLog gameLog = new GameLog();
     Timer mTimer;
-    private Player[] players;
+    private Player[] players = new Player[10];
     private int curNight, curDay;
-    public static int DON = 20, SHERIFF = 21, MAFIA = 22, CITIZEN = 23;
-    public static int ZERO_NIGHT = 10, DAY = 11, SHOOT = 12, DON_CHECKING = 13, SHERIFF_CHECKING = 14, SPEECH = 15, VOTE = 16, FIGHT = 17;
-    public static int IN_GAME = 30, KILLED = 31, VOTED_OUT = 32, MUTED = 33, LEFT = 34, DISQUALIFIED = 35;
+//    public static int DON = 20, SHERIFF = 21, MAFIA = 22, CITIZEN = 23;
+//    public static int ZERO_NIGHT = 10, DAY = 11, SHOOT = 12, DON_CHECKING = 13, SHERIFF_CHECKING = 14, SPEECH = 15, VOTE = 16, FIGHT = 17;
+//    public static int IN_GAME = 30, KILLED = 31, VOTED_OUT = 32, MUTED = 33, LEFT = 34, DISQUALIFIED = 35;
     //TODO backup(); restoreLastState(); restoreState();
     //TODO game log
 
     public MafiaCore() {
-        phase = ZERO_NIGHT;
+        phase = GamePhase.ZERO_NIGHT;
         curDay = curNight = 0;
-        players = new Player[10];
-        for (int i = 0; i<10; i++)
-            players[i] = new Player();
     }
 
-    public void initPlayer(int number, boolean sex, String name, int role) {
-        players[number].sex = sex;
-        if (!name.isEmpty()) players[number].name = name;
-        players[number].role = role;
-        players[number].number = number;
+    public void initPlayer(int number, boolean sex, String name, Role role) {
+        players[number] = new Player(number, name, sex, role);
     }
-
-    public void setPhase(int newPhase) {
+    public void initPlayer(int number, boolean sex, Role role) {
+        players[number] = new Player(number, sex, role);
+    }
+    public void setPhase(GamePhase newPhase) {
         phase = newPhase;
     }
 
     public int startDay() {
-        setPhase(MafiaCore.DAY);
+        setPhase(GamePhase.DAY);
         return ++curDay;
     }
 
@@ -43,7 +40,7 @@ public class MafiaCore {
         //TODO проверить состояние, отклонить или принять следующий ход
         curPlayer = nextPlayer;
         calcNextPlayer();
-        setPhase(SPEECH);
+        setPhase(GamePhase.SPEECH);
         mTimer = new Timer();
         TurnTimerTask thisTurn = new TurnTimerTask();
         players[curPlayer].speech(speechDuration);
@@ -58,12 +55,12 @@ public class MafiaCore {
 
     public boolean nominate(int from, int to) {
         gameLog.addNomination(curDay, from, to);
-        System.err.println("Игрок " + to + " принят на голосование.");
+        System.out.println("Игрок " + to + " принят на голосование.");
         return true;
     }
 
     public boolean nominate(int to) {
-        if (phase == SPEECH) //during speech
+        if (phase == GamePhase.SPEECH) //during speech
             if (nominatedBy(curDay, to)==-1) //if not nominated already
                 if (getNominations(curDay, curPlayer)==-1)
                     return nominate(curPlayer, to);
@@ -71,19 +68,19 @@ public class MafiaCore {
     }
 
     public void pass() {
-        setPhase(DAY);
+        setPhase(GamePhase.DAY);
         mTimer.cancel();
         mTimer = null;
         curPlayer = -1;
     }
 
     public boolean denominate(int from, int to) {
-        if (getPhase()==SPEECH) {
+        if (getPhase()==GamePhase.SPEECH) {
             return true;
         } else return false;
     }
 
-    public int getPhase() {
+    public GamePhase getPhase() {
         return phase;
     }
 
@@ -106,32 +103,15 @@ public class MafiaCore {
     }
 
     public void shot(int player) {
-        players[player].state = KILLED;
-    }
-
-    class Player {
-        boolean sex = true; //false is female
-        int number;
-        int state = IN_GAME;
-        String name = "Игрок";
-        int role;
-        int fault = 0;
-
-        void speech() {
-            speech(60);
-        }
-
-        void speech(int seconds) {
-            System.err.println("Слово получает игрок №" + (number) + " - " + name);
-        }
+        players[player].state = PlayerState.KILLED;
     }
 
     class TurnTimerTask extends TimerTask {
 
         @Override
         public void run() {
-            setPhase(DAY);
-            System.err.println("Спасибо, игрок №" + (curPlayer));
+            setPhase(GamePhase.DAY);
+            System.out.println("Спасибо, игрок №" + (curPlayer));
             mTimer.cancel();
             mTimer = null;
         }
