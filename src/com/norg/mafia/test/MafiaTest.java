@@ -1,3 +1,8 @@
+package com.norg.mafia.test;
+
+import com.norg.mafia.engine.MafiaCore;
+import com.norg.mafia.engine.Role;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
@@ -33,8 +38,11 @@ public class MafiaTest {
         Thread.sleep(5000);
 //        while (mafiaCore.getPhase() == GamePhase.SPEECH);
         System.out.println(mafiaCore.getPhase());
-        mafiaCore.nextTurn(10);
-        Thread.sleep(3000);
-        System.out.println(mafiaCore.getPhase());
+        for (int i=0; i<11; i++) {
+            mafiaCore.nextTurn(10);
+            Thread.sleep(2000);
+            mafiaCore.endSpeech();
+            System.out.println(mafiaCore.getPhase());
+        }
     }
 }

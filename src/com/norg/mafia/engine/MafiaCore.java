@@ -1,3 +1,5 @@
+package com.norg.mafia.engine;
+
 import java.util.*;
 
 /**
@@ -41,7 +43,7 @@ public class MafiaCore {
         calcNextPlayer();
         setPhase(GamePhase.SPEECH);
         mTimer = new Timer();
-        TurnTimerTask thisTurn = new TurnTimerTask();
+        SpeechTimerTask thisTurn = new SpeechTimerTask();
         players[curPlayer].speech(speechDuration);
         mTimer.schedule(thisTurn, speechDuration*1000);
         return true;
@@ -66,14 +68,8 @@ public class MafiaCore {
         return false;
     }
 
-    public void pass() {
-        setPhase(GamePhase.DAY);
-        mTimer.cancel();
-        mTimer = null;
-        curPlayer = -1;
-    }
-
     public boolean denominate(int from, int to) {
+        //TODO check whether correct
         if (getPhase()==GamePhase.SPEECH) {
             return true;
         } else return false;
@@ -105,14 +101,19 @@ public class MafiaCore {
         players[player] = players[player].withNewState(PlayerState.KILLED);
     }
 
-    class TurnTimerTask extends TimerTask {
+    class SpeechTimerTask extends TimerTask {
 
         @Override
         public void run() {
-            setPhase(GamePhase.DAY);
-            System.out.println("Спасибо, игрок №" + (curPlayer));
-            mTimer.cancel();
-            mTimer = null;
+            endSpeech();
         }
+    }
+
+    public void endSpeech() {
+        setPhase(GamePhase.DAY);
+        System.out.println("Спасибо, игрок №" + (curPlayer));
+        mTimer.cancel();
+        mTimer = null;
+        curPlayer = -1;
     }
 }

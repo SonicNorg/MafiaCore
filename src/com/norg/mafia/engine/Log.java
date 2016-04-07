@@ -1,8 +1,11 @@
+package com.norg.mafia.engine;
+
 /**
  * Interface for logging game. Expected implementations:
  *  File log
  *  SQL log
  *  Object log (in-game log)
+ *  Console log
  *  etc.
  * Created by pavel.krizhanovskiy on 07.04.2016.
  */

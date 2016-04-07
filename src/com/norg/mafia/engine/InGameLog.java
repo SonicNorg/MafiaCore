@@ -1,3 +1,5 @@
+package com.norg.mafia.engine;
+
 import java.util.HashMap;
 
 /**
