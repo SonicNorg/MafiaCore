@@ -14,6 +14,7 @@ public final class Player {
     private final Role role;
     private final int fault;
 
+    // TODO: 08.04.2016 get speech duration from rules
     void speech() {
         speech(60);
     }

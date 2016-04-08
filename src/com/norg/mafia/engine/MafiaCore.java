@@ -24,9 +24,11 @@ public class MafiaCore {
     public void initPlayer(int number, boolean sex, String name, Role role) {
         players[number] = new Player(number, name, sex, role);
     }
+
     public void initPlayer(int number, boolean sex, Role role) {
         players[number] = new Player(number, sex, role);
     }
+
     public void setPhase(GamePhase newPhase) {
         phase = newPhase;
     }
@@ -36,8 +38,8 @@ public class MafiaCore {
         return ++curDay;
     }
 
-    public boolean nextTurn(int speechDuration) {
-        //TODO проверить состояние, отклонить или принять следующий ход
+    public boolean nextTurn(int speechDuration) { // TODO: 08.04.2016 move to classes Master and Game
+        //TODO check phase, getNextPhase, split for 2 methods in 2 classes
         if (getPhase() != GamePhase.DAY && getPhase() != GamePhase.NIGHT) return false;
         curPlayer = nextPlayer;
         calcNextPlayer();
@@ -77,15 +79,15 @@ public class MafiaCore {
 
     public GamePhase getPhase() {
         return phase;
-    }
+    } // TODO: 08.04.2016 move to class Game
 
     public int addFault(int player) {
         return (players[player] = players[player].addFault()).faults();
-    }
+    } // TODO: 08.04.2016 move to class Master
 
     public int getDay() {
         return curDay;
-    }
+    } // TODO: 08.04.2016 move to class Game
 
     public int getNominations(int turn, int player) {
         //TODO if player == -1 || turn == -1
@@ -109,8 +111,8 @@ public class MafiaCore {
         }
     }
 
-    public void endSpeech() {
-        setPhase(GamePhase.DAY);
+    public void endSpeech() { //TODO move to class Master
+        setPhase(GamePhase.DAY); // TODO: 08.04.2016 move setPhase() to class Game and set not only DAY phase
         System.out.println("Спасибо, игрок №" + (curPlayer));
         mTimer.cancel();
         mTimer = null;
