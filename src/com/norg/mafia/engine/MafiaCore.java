@@ -45,9 +45,9 @@ public class MafiaCore {
         calcNextPlayer();
         setPhase(GamePhase.SPEECH);
         mTimer = new Timer();
-        SpeechTimerTask thisTurn = new SpeechTimerTask();
-        players[curPlayer].speech(speechDuration);
-        mTimer.schedule(thisTurn, speechDuration*1000);
+//        Master.SpeechTimerTask thisTurn = new SpeechTimerTask();
+//        players[curPlayer].speech(speechDuration);
+//        mTimer.schedule(thisTurn, speechDuration*1000);
         return true;
     }
 
@@ -103,19 +103,6 @@ public class MafiaCore {
         players[player] = players[player].withNewState(PlayerState.KILLED);
     }
 
-    class SpeechTimerTask extends TimerTask {
 
-        @Override
-        public void run() {
-            endSpeech();
-        }
-    }
 
-    public void endSpeech() { //TODO move to class Master
-        setPhase(GamePhase.DAY); // TODO: 08.04.2016 move setPhase() to class Game and set not only DAY phase
-        System.out.println("Спасибо, игрок №" + (curPlayer));
-        mTimer.cancel();
-        mTimer = null;
-        curPlayer = -1;
-    }
 }

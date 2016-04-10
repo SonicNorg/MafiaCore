@@ -60,4 +60,8 @@ public final class Player {
     public String toString() {
         return (sex ? "г-н " : "г-жа ") + name;
     }
+
+    public int number() {
+        return number;
+    }
 }
